@@ -11,7 +11,7 @@
   },
   "servers": [
     {
-      "url": "http://localhost:4200/api",
+      "url": "http://localhost:3002/",
       "description": "Proxy API url"
     },
     {
@@ -24,11 +24,9 @@
     }
   ],
   "paths": {
-    "/ocpi/cpo/versions": {
+    "/ocpi/versions": {
       "get": {
-        "tags": [
-          "versions-controller"
-        ],
+        "tags": ["versions-controller"],
         "operationId": "getVersions",
         "summary": "Lists all versions available",
         "description": "Implemented by: ALL\n\nThis endpoint lists all the available OCPI versions and the corresponding URLs to where version specific details such as the supported endpoints can be found.",
@@ -46,14 +44,12 @@
         }
       }
     },
-    "/ocpi/cpo/{versionNumber}": {
+    "/ocpi/{versionNumber}": {
       "get": {
         "operationId": "getVersion",
         "summary": "Gets more details of a version",
         "description": "Implemented by: ALL\n\nVia the version details, the parties can exchange which modules are implemented for a specific version of OCPI, which interface role is implemented, and what the endpoint URL is for this interface.\n\nParties that are both CPO and eMSP (or a Hub) can implement one version endpoint that covers both roles. With the information that is available in the version details, parties don’t need to implement a separate endpoint per role (CPO or eMSP) anymore. In practice this means that when a company is both a CPO and an eMSP and it connects to another party that implements both interfaces, only one OCPI connection is needed.",
-        "tags": [
-          "versions-controller"
-        ],
+        "tags": ["versions-controller"],
         "parameters": [
           {
             "name": "versionNumber",
@@ -99,30 +95,11 @@
     },
     "/ocpi/2.2.1/credentials": {
       "get": {
-        "tags": [
-          "credentials-controller"
-        ],
+        "tags": ["credentials-controller"],
         "operationId": "getCredentials",
         "summary": "Retrieves the credentials object to access the server's platform",
         "description": "Implemented by: ALL\n\nRetrieves the credentials object to access the server’s platform. The request body is empty, the response contains the credentials object to access the server’s platform. This credentials object also contains extra information about the server such as its business details.",
-        "parameters": [
-          {
-            "name": "X-Request-ID",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Correlation-ID",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "responses": {
           "200": {
             "description": "OK",
@@ -137,30 +114,11 @@
         }
       },
       "post": {
-        "tags": [
-          "credentials-controller"
-        ],
+        "tags": ["credentials-controller"],
         "operationId": "postCredentials",
         "summary": "Provides the server with a credentials object to access the client's system (i.e. register).",
         "description": "Implemented by: ALL\n\nProvides the server with credentials to access the client’s system. This credentials object also contains extra information about the client such as its business details.\n\nA `POST` initiates the registration process for this endpoint's version. The server must also fetch the client's endpoints for this version. \n\nIf successful, the server must generate a new token and respond with the client's new credentials to access the server's system. The credentials object in the response also contains extra information about the server such as its business details.\n\nImplemented by: All OCPI ",
-        "parameters": [
-          {
-            "name": "X-Request-ID",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Correlation-ID",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -188,30 +146,11 @@
         }
       },
       "put": {
-        "tags": [
-          "credentials-controller"
-        ],
+        "tags": ["credentials-controller"],
         "operationId": "putCredentials",
         "summary": "Provides the server with updated credentials to access the client’s system",
         "description": "Implemented by: ALL\n\nProvides the server with updated credentials to access the client’s system. This credentials object also contains extra information about the client such as its business details.\n\nA `PUT` will switch to the version that contains this credentials endpoint if it’s different from the current version. The server must fetch the client’s endpoints again, even if the version has not changed.\n\nIf successful, the server must generate a new credentials token for the client and respond with the client’s updated credentials to access the server’s system. The credentials object in the response also contains extra information about the server such as its business details.",
-        "parameters": [
-          {
-            "name": "X-Request-ID",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Correlation-ID",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -239,30 +178,11 @@
         }
       },
       "delete": {
-        "tags": [
-          "credentials-controller"
-        ],
+        "tags": ["credentials-controller"],
         "operationId": "deleteCredentials",
         "summary": "Informs the server that its credentials to access the client’s system are now invalid and can no longer be used",
         "description": "Implemented by: ALL\n\nInforms the server that its credentials to access the client’s system are now invalid and can no longer be used. Both parties must end any automated communication. This is the unregistration process.",
-        "parameters": [
-          {
-            "name": "X-Request-ID",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Correlation-ID",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "responses": {
           "200": {
             "description": "OK",
@@ -282,9 +202,7 @@
     },
     "/ocpi/sender/2.2.1/locations": {
       "get": {
-        "tags": [
-          "locations-controller"
-        ],
+        "tags": ["locations-controller"],
         "operationId": "getLocationListFromDataOwner",
         "summary": "Gets all a list of locations",
         "description": "Implemented by: CPO\n\nDepending on the URL Segments provided, the `GET` request can either be used to retrieve information about a list of available Locations (with EVSEs and Connectors) at a CPO (`GET` List) or it can be used to retrieve information about one specific Location, `GET` Fetch a list of Locations, last updated between the {date_from} and {date_to} (paginated), or get a specific Location, EVSE or Connector. EVSE or Connector (`GET` Object).",
@@ -388,9 +306,7 @@
     },
     "/ocpi/sender/2.2.1/locations/{locationID}": {
       "get": {
-        "tags": [
-          "locations-controller"
-        ],
+        "tags": ["locations-controller"],
         "operationId": "getLocationObjectFromDataOwner",
         "summary": "Gets the specific Location object with locationID",
         "description": "Implemented by: CPO\n\nGiven a locationID, it will return the Location object with the same locationID",
@@ -471,9 +387,7 @@
     },
     "/ocpi/sender/2.2.1/locations/{locationID}/{evseUID}": {
       "get": {
-        "tags": [
-          "locations-controller"
-        ],
+        "tags": ["locations-controller"],
         "operationId": "getEvseObjectFromDataOwner",
         "summary": "Gets the specific Evse object at a location",
         "description": "Implemented by: CPO\n\nGiven a locationID and evseUID, it will return the Evse object with the same uid at that specific location",
@@ -562,9 +476,7 @@
     },
     "/ocpi/sender/2.2.1/locations/{locationID}/{evseUID}/{connectorID}": {
       "get": {
-        "tags": [
-          "locations-controller"
-        ],
+        "tags": ["locations-controller"],
         "operationId": "getConnectorObjectFromDataOwner",
         "summary": "Gets the specific Connector object from an EVSE at a location",
         "description": "Implemented by: CPO\n\nGiven a locationID, evseUID and connectorID it will return the Connector object with the same connectorID",
@@ -661,9 +573,7 @@
     },
     "/ocpi/receiver/2.2.1/locations/{countryCode}/{partyID}/{locationID}": {
       "get": {
-        "tags": [
-          "locations-controller"
-        ],
+        "tags": ["locations-controller"],
         "operationId": "getClientOwnedLocation",
         "summary": "Get the Location object stored in the eMSP",
         "description": "Implemented by: eMSP, NSP\n\nLocations are Client Owned Objects, so the end-points need to contain the required extra fields: {party_id} and {country_code}.\n\nIf the CPO wants to check the status of a Location, EVSE or Connector object in the eMSP system, it might `GET` the object from the eMSP system for validation purposes. The CPO is the owner of the objects, so it would be illogical if the eMSP system had a different status or was missing an object. If a discrepancy is found, the CPO might push an update to the eMSP via a `PUT` or `PATCH` call.",
@@ -758,9 +668,7 @@
         }
       },
       "put": {
-        "tags": [
-          "locations-controller"
-        ],
+        "tags": ["locations-controller"],
         "operationId": "putClientOwnedLocation",
         "summary": "The CPO pushes the available Location object to the eMSP.",
         "description": "Implemented by: eMSP, NSP\n\nThe CPO pushes available Location, EVSE or Connector objects to the eMSP. `PUT` can be used to send new Location objects to the eMSP but also to replace existing Locations.\n\nWhen the `PUT` only contains a Connector Object, the Receiver SHALL also set the new last_updated value on the parent EVSE and Location Objects.\n\nWhen the `PUT` only contains a EVSE Object, the Receiver SHALL also set the new last_updated value on the parent Location Object.",
@@ -862,9 +770,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "locations-controller"
-        ],
+        "tags": ["locations-controller"],
         "operationId": "patchClientOwnedLocation",
         "summary": "Updates the existing fields of a location stored in the eMSP",
         "description": "Implemented by: eMSP, NSP\n\nSame as the `PUT` method, but only the fields/objects that have to be updated have to be present. Other fields/objects that are not specified as part of the request are considered unchanged. Therefore, this method is not suitable to remove information shared earlier.\n\nAny request to the `PATCH` method SHALL contain the last_updated field.\n\nWhen the `PATCH` is on a Connector Object, the Receiver SHALL also set the new last_updated value on the parent EVSE and Location Objects.\n\nWhen the `PATCH` is on a EVSE Object, the Receiver SHALL also set the new last_updated value on the parent Location Object.",
@@ -974,9 +880,7 @@
     },
     "/ocpi/receiver/2.2.1/locations/{countryCode}/{partyID}/{locationID}/{evseUID}": {
       "get": {
-        "tags": [
-          "locations-controller"
-        ],
+        "tags": ["locations-controller"],
         "operationId": "getClientOwnedEvse",
         "summary": "Get the Evse object stored in the eMSP",
         "description": "Implemented by: eMSP, NSP\n\nLocations are Client Owned Objects, so the end-points need to contain the required extra fields: {party_id} and {country_code}.\n\nIf the CPO wants to check the status of a Location, EVSE or Connector object in the eMSP system, it might `GET` the object from the eMSP system for validation purposes. The CPO is the owner of the objects, so it would be illogical if the eMSP system had a different status or was missing an object. If a discrepancy is found, the CPO might push an update to the eMSP via a `PUT` or `PATCH` call.",
@@ -1079,9 +983,7 @@
         }
       },
       "put": {
-        "tags": [
-          "locations-controller"
-        ],
+        "tags": ["locations-controller"],
         "operationId": "putClientOwnedEvse",
         "summary": "The CPO pushes the available Evse object to the eMSP.",
         "description": "Implemented by: eMSP, NSP\n\nThe CPO pushes available Location, EVSE or Connector objects to the eMSP. `PUT` can be used to send new Location objects to the eMSP but also to replace existing Locations.\n\nWhen the `PUT` only contains a Connector Object, the Receiver SHALL also set the new last_updated value on the parent EVSE and Location Objects.\n\nWhen the `PUT` only contains a EVSE Object, the Receiver SHALL also set the new last_updated value on the parent Location Object.",
@@ -1194,9 +1096,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "locations-controller"
-        ],
+        "tags": ["locations-controller"],
         "operationId": "patchClientOwnedEvse",
         "summary": "Updates the existing fields of an EVSE stored in the eMSP",
         "description": "Implemented by: eMSP, NSP\n\nSame as the `PUT` method, but only the fields/objects that have to be updated have to be present. Other fields/objects that are not specified as part of the request are considered unchanged. Therefore, this method is not suitable to remove information shared earlier.\n\nAny request to the `PATCH` method SHALL contain the last_updated field.\n\nWhen the `PATCH` is on a Connector Object, the Receiver SHALL also set the new last_updated value on the parent EVSE and Location Objects.\n\nWhen the `PATCH` is on a EVSE Object, the Receiver SHALL also set the new last_updated value on the parent Location Object.",
@@ -1314,9 +1214,7 @@
     },
     "/ocpi/receiver/2.2.1/locations/{countryCode}/{partyID}/{locationID}/{evseUID}/{connectorID}": {
       "get": {
-        "tags": [
-          "locations-controller"
-        ],
+        "tags": ["locations-controller"],
         "operationId": "getClientOwnedConnector",
         "summary": "Get the Connector object stored in the eMSP",
         "description": "Implemented by: eMSP, NSP\n\nLocations are Client Owned Objects, so the end-points need to contain the required extra fields: {party_id} and {country_code}.\n\nIf the CPO wants to check the status of a Location, EVSE or Connector object in the eMSP system, it might `GET` the object from the eMSP system for validation purposes. The CPO is the owner of the objects, so it would be illogical if the eMSP system had a different status or was missing an object. If a discrepancy is found, the CPO might push an update to the eMSP via a `PUT` or `PATCH` call.",
@@ -1427,9 +1325,7 @@
         }
       },
       "put": {
-        "tags": [
-          "locations-controller"
-        ],
+        "tags": ["locations-controller"],
         "operationId": "putClientOwnedConnector",
         "summary": "The CPO pushes the available Connector object to the eMSP.",
         "description": "Implemented by: eMSP, NSP\n\nThe CPO pushes available Location, EVSE or Connector objects to the eMSP. `PUT` can be used to send new Location objects to the eMSP but also to replace existing Locations.\n\nWhen the `PUT` only contains a Connector Object, the Receiver SHALL also set the new last_updated value on the parent EVSE and Location Objects.\n\nWhen the `PUT` only contains a EVSE Object, the Receiver SHALL also set the new last_updated value on the parent Location Object.",
@@ -1550,9 +1446,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "locations-controller"
-        ],
+        "tags": ["locations-controller"],
         "operationId": "patchClientOwnedConnector",
         "summary": "Updates the existing fields of a connector stored in the eMSP",
         "description": "Implemented by: eMSP, NSP\n\nSame as the `PUT` method, but only the fields/objects that have to be updated have to be present. Other fields/objects that are not specified as part of the request are considered unchanged. Therefore, this method is not suitable to remove information shared earlier.\n\nAny request to the `PATCH` method SHALL contain the last_updated field.\n\nWhen the `PATCH` is on a Connector Object, the Receiver SHALL also set the new last_updated value on the parent EVSE and Location Objects.\n\nWhen the `PATCH` is on a EVSE Object, the Receiver SHALL also set the new last_updated value on the parent Location Object.",
@@ -1678,9 +1572,7 @@
     },
     "/ocpi/sender/2.2.1/sessions": {
       "get": {
-        "tags": [
-          "sessions-controller"
-        ],
+        "tags": ["sessions-controller"],
         "operationId": "getSessionsFromDataOwner",
         "summary": "Fetch all sessions from a CPO system",
         "description": "Implemented by: CPO\n\nFetch Sessions from a CPO system.\n\nEndpoint structure definition:\n\n{sessions_endpoint_url}?[date_from={date_from}]&[date_to={date_to}]&[offset={offset}]&[limit={limit}]",
@@ -1784,9 +1676,7 @@
     },
     "/ocpi/sender/2.2.1/sessions/{sessionID}/charging_preferences": {
       "put": {
-        "tags": [
-          "sessions-controller"
-        ],
+        "tags": ["sessions-controller"],
         "operationId": "putChargingPreferences",
         "summary": "Set/update the driver’s Charging Preferences for this charging session",
         "description": "Implemented by: eMSP,SCSP\n\nSet/update the driver’s Charging Preferences for this charging session.\n\nNOTE: The /charging_preferences URL siffix is required when setting Charging Preferences",
@@ -1877,9 +1767,7 @@
     },
     "/ocpi/receiver/2.2.1/sessions/{countryCode}/{partyID}/{sessionID}": {
       "get": {
-        "tags": [
-          "sessions-controller"
-        ],
+        "tags": ["sessions-controller"],
         "operationId": "getClientOwnedSession",
         "summary": "Get the Session object stored in the eMSP",
         "description": "Implemented by: eMSP, SCSP\n\nThe CPO system might request the current version of a Session object from the eMSP’s system to, for example, validate the state, or because the CPO has received an error during a `PATCH` operation.",
@@ -1974,9 +1862,7 @@
         }
       },
       "put": {
-        "tags": [
-          "sessions-controller"
-        ],
+        "tags": ["sessions-controller"],
         "operationId": "putClientOwnedSession",
         "summary": "Inform the eMSP's system about a new/updated Session object in the CPO's system",
         "description": "Implemented by: eMSP, SCSP\n\nInform the eMSP’s system about a new/updated Session object in the CPO’s system.\n\nWhen a `PUT` request is received for an existing Session object (the object is `PUT` to the same URL), The newly received Session object SHALL replace the existing object.\n\nAny charging_periods from the existing object SHALL be replaced by the charging_periods from the newly received Session object. If the new Session object does not contain charging_periods (field is omitted or contains any empty list), the charging_periods of the existing object SHALL be removed (replaced by the new empty list).",
@@ -2078,9 +1964,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "sessions-controller"
-        ],
+        "tags": ["sessions-controller"],
         "operationId": "patchClientOwnedSession",
         "summary": "Updates the existing fields of a Session in the eMSP's system",
         "description": "Implemented by: eMSP, SCSP\n\nSame as the `PUT` method, but only the fields/objects that need to be updated have to be present. Fields/objects which are not specified are considered unchanged.\n\nAny request to the `PATCH` method SHALL contain the last_updated field.\n\nThe `PATCH` method of the Session Receiver interface works on the entire Session object only. It is not allowed to use extra URLsegments to try to `PATCH` fields of inner objects of the Session object directly.\n\nWhen a `PATCH` request contains the charging_periods field (inside a Session object), this SHALL be processed as a request to add all the ChargingPeriod objects to the existing Session object. If the request charging_periods list is omitted (or contains an empty list), no changes SHALL be made to the existing list of charging_periods.\n\nIf existing ChargingPeriod objects in a Session need to be replaced or removed, the Sender SHALL use the `PUT` method to replace the entire Session object (including all the charging_periods).",
@@ -2190,9 +2074,7 @@
     },
     "/ocpi/sender/2.2.1/cdrs": {
       "get": {
-        "tags": [
-          "cdrs-controller"
-        ],
+        "tags": ["cdrs-controller"],
         "operationId": "getCdrsFromDataOwner",
         "summary": "Fetch CDRs from the CPO interface",
         "description": "Implemented by: CPO\n\nFetch CDRs last updated (which in the current version of OCPI can only be the creation Date/Time) between the {date_from} and {date_to} (paginated).",
@@ -2296,9 +2178,7 @@
     },
     "/ocpi/receiver/2.2.1/cdrs/{cdrID}": {
       "get": {
-        "tags": [
-          "cdrs-controller"
-        ],
+        "tags": ["cdrs-controller"],
         "operationId": "getClientOwnedCdr",
         "summary": "Retrieve an existing CDR",
         "description": "Implemented by: eMSP\n\nFetch CDRs from the receivers system.",
@@ -2379,9 +2259,7 @@
     },
     "/ocpi/receiver/2.2.1/cdrs": {
       "post": {
-        "tags": [
-          "cdrs-controller"
-        ],
+        "tags": ["cdrs-controller"],
         "operationId": "postClientOwnedCdr",
         "summary": "Send a new CDR",
         "description": "Implemented by: eMSP\n\nCreates a new CDR.\n\nThe `POST` method should contain the full and final CDR object.",
@@ -2461,9 +2339,7 @@
     },
     "/ocpi/sender/2.2.1/tariffs": {
       "get": {
-        "tags": [
-          "tariffs-controller"
-        ],
+        "tags": ["tariffs-controller"],
         "operationId": "getTariffsFromDataOwner",
         "summary": "Returns Tariff objects from the CPO, last updated between the {date_from} and {date_to} (paginated)",
         "description": "Implemented by: CPO\n\nFetch information about all Tariffs.",
@@ -2567,9 +2443,7 @@
     },
     "/ocpi/receiver/2.2.1/tariffs/{countryCode}/{partyID}/{tariffID}": {
       "get": {
-        "tags": [
-          "tariffs-controller"
-        ],
+        "tags": ["tariffs-controller"],
         "operationId": "getClientOwnedTariff",
         "summary": "Retrieve a Tariff as it is stored in the eMSP’s system.",
         "description": "Implemented by: eMSP, NSP\n\nIf the CPO wants to check the status of a Tariff in the eMSP’s system, it might `GET` the object from the eMSP’s system for validation purposes. After all, the CPO is the owner of the object, so it would be illogical if the eMSP’s system had a different status or was missing the object entirely.",
@@ -2664,9 +2538,7 @@
         }
       },
       "put": {
-        "tags": [
-          "tariffs-controller"
-        ],
+        "tags": ["tariffs-controller"],
         "operationId": "putClientOwnedTariff",
         "summary": "Push new/updated Tariff object to the eMSP",
         "description": "Implemented by: eMSP, NSP\n\nNew or updated Tariff objects are pushed from the CPO to the eMSP.",
@@ -2768,9 +2640,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "tariffs-controller"
-        ],
+        "tags": ["tariffs-controller"],
         "operationId": "deleteClientOwnedTariff",
         "summary": "Remove a Tariff object which is no longer in use and will not be used in the future either",
         "description": "Implemented by: eMSP, NSP\n\nDelete a Tariff object which is not used any more and will not be used in the future.\n\nNOTE: Before deleting a Tariff object, it is RECOMMENDED to ensure that the Tariff object is not referenced by any Connector object within the tariff_ids.",
@@ -2864,9 +2734,7 @@
     },
     "/ocpi/receiver/2.2.1/tokens/{countryCode}/{partyID}/{tokenUID}": {
       "get": {
-        "tags": [
-          "tokens-controller"
-        ],
+        "tags": ["tokens-controller"],
         "operationId": "getClientOwnedToken",
         "summary": "Retrieve a Token as it is stored in the CPO system",
         "description": "Implemented by: CPO\n\nIf the eMSP wants to check the status of a Token in the CPO system it might `GET` the object from the CPO system for validation purposes. The eMSP is the owner of the objects, so it would be illogical if the CPO system had a different status or was missing an object.",
@@ -2949,12 +2817,7 @@
             "required": false,
             "schema": {
               "type": "string",
-              "enum": [
-                "AD_HOC_USER",
-                "APP_USER",
-                "OTHER",
-                "RFID"
-              ],
+              "enum": ["AD_HOC_USER", "APP_USER", "OTHER", "RFID"],
               "default": "RFID"
             }
           }
@@ -2973,9 +2836,7 @@
         }
       },
       "put": {
-        "tags": [
-          "tokens-controller"
-        ],
+        "tags": ["tokens-controller"],
         "operationId": "putClientOwnedToken",
         "summary": "Push new/updated Token object to the CPO",
         "description": "Implemented by: CPO\n\nNew or updated Token objects are pushed from the eMSP to the CPO.",
@@ -3058,12 +2919,7 @@
             "required": false,
             "schema": {
               "type": "string",
-              "enum": [
-                "AD_HOC_USER",
-                "APP_USER",
-                "OTHER",
-                "RFID"
-              ],
+              "enum": ["AD_HOC_USER", "APP_USER", "OTHER", "RFID"],
               "default": "RFID"
             }
           }
@@ -3092,9 +2948,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "tokens-controller"
-        ],
+        "tags": ["tokens-controller"],
         "operationId": "patchClientOwnedToken",
         "summary": "Notify the CPO of partial updates to a Token",
         "description": "Implemented by: CPO\n\nSame as the `PUT` method, but only the fields/objects that have to be updated have to be present, other fields/objects that are not specified are considered unchanged.\n\nAny request to the `PATCH` method SHALL contain the last_updated field.",
@@ -3177,12 +3031,7 @@
             "required": false,
             "schema": {
               "type": "string",
-              "enum": [
-                "AD_HOC_USER",
-                "APP_USER",
-                "OTHER",
-                "RFID"
-              ],
+              "enum": ["AD_HOC_USER", "APP_USER", "OTHER", "RFID"],
               "default": "RFID"
             }
           }
@@ -3216,9 +3065,7 @@
     },
     "/ocpi/sender/2.2.1/tokens": {
       "get": {
-        "tags": [
-          "tokens-controller"
-        ],
+        "tags": ["tokens-controller"],
         "operationId": "getTokensFromDataOwner",
         "summary": "Get the list of known Tokens, last updated between the {date_from} and {date_to}(paginated)",
         "description": "Implemented by: eMSP\n\nFetch information about Tokens known in the eMSP systems.",
@@ -3322,9 +3169,7 @@
     },
     "/ocpi/sender/2.2.1/tokens/{tokenUID}/authorize": {
       "post": {
-        "tags": [
-          "tokens-controller"
-        ],
+        "tags": ["tokens-controller"],
         "operationId": "postRealTimeTokenAuthorization",
         "summary": "Real-time authorization request",
         "description": "Implemented by: eMSP\n\nDo a 'real-time' authorization request to the eMSP system, validating if a Token might be used (at the optionally given Location).\n\nWhen the eMSP does not know the Token, the eMSP SHALL respond with an HTTP status code: 404 (Not Found).\n\nWhen the eMSP receives a 'real-time' authorization request from a CPO that contains too little information (no LocationReferences provided) to determine if the Token might be used, the eMSP SHALL respond with the OCPI status: 2002",
@@ -3391,12 +3236,7 @@
             "required": false,
             "schema": {
               "type": "string",
-              "enum": [
-                "AD_HOC_USER",
-                "APP_USER",
-                "OTHER",
-                "RFID"
-              ],
+              "enum": ["AD_HOC_USER", "APP_USER", "OTHER", "RFID"],
               "default": "RFID"
             }
           }
@@ -3429,9 +3269,7 @@
     },
     "/ocpi/receiver/2.2.1/commands/CANCEL_RESERVATION": {
       "post": {
-        "tags": [
-          "commands-controller"
-        ],
+        "tags": ["commands-controller"],
         "operationId": "postCancelReservation",
         "summary": "Send a command to the CPO, requesting the CPO to send the command to the Charge Point",
         "description": "Implemented by: CPO\n\nCancelReservation object, for the CANCEL_RESERVATION command, with information needed to cancel an existing reservation.",
@@ -3511,9 +3349,7 @@
     },
     "/ocpi/receiver/2.2.1/commands/RESERVE_NOW": {
       "post": {
-        "tags": [
-          "commands-controller"
-        ],
+        "tags": ["commands-controller"],
         "operationId": "postReserveNow",
         "summary": "Send a command to the CPO, requesting the CPO to send the command to the Charge Point",
         "description": "Implemented by: CPO\n\nReserveNow object, for the RESERVE_NOW command, with information needed to reserve a (specific) connector of a Charge Point for a given Token.",
@@ -3593,9 +3429,7 @@
     },
     "/ocpi/receiver/2.2.1/commands/START_SESSION": {
       "post": {
-        "tags": [
-          "commands-controller"
-        ],
+        "tags": ["commands-controller"],
         "operationId": "postStartSession",
         "summary": "Send a command to the CPO, requesting the CPO to send the command to the Charge Point",
         "description": "Implemented by: CPO\n\nStartSession object, for the START_SESSION command, with information needed to start a sessions.",
@@ -3675,9 +3509,7 @@
     },
     "/ocpi/receiver/2.2.1/commands/STOP_SESSION": {
       "post": {
-        "tags": [
-          "commands-controller"
-        ],
+        "tags": ["commands-controller"],
         "operationId": "postStopSession",
         "summary": "Send a command to the CPO, requesting the CPO to send the command to the Charge Point",
         "description": "Implemented by: CPO\n\nStopSession object, for the STOP_SESSION command, with information needed to stop a session.",
@@ -3757,9 +3589,7 @@
     },
     "/ocpi/receiver/2.2.1/commands/UNLOCK_CONNECTOR": {
       "post": {
-        "tags": [
-          "commands-controller"
-        ],
+        "tags": ["commands-controller"],
         "operationId": "postUnlockConnector",
         "summary": "Send a command to the CPO, requesting the CPO to send the command to the Charge Point",
         "description": "Implemented by: CPO\n\nUnlockConnector object, for the UNLOCK_CONNECTOR command, with information needed to unlock a connector of a Charge Point.",
@@ -3839,9 +3669,7 @@
     },
     "/ocpi/sender/2.2.1/commands/{command}/{uid}": {
       "post": {
-        "tags": [
-          "commands-controller"
-        ],
+        "tags": ["commands-controller"],
         "operationId": "postAsyncResponse",
         "summary": "Receive the asynchronous response from the Charge Point",
         "description": "Implemented by: eMSP\n\nThe Sender interface receives the asynchronous responses.\n\nIt is up to the implementation of the eMSP to determine what parameters are put in the URL. The eMSP sends a URL in the `POST` method body to the CPO. The CPO is required to use this URL for the asynchronous response by the Charge Point. It is advised to make this URL unique for every request to differentiate simultaneous commands, for example by adding a unique id as a URL segment.",
@@ -3944,9 +3772,7 @@
     },
     "/ocpi/2.2.1/receiver/chargingprofiles/{sessionId}": {
       "get": {
-        "tags": [
-          "charging-profiles-controller"
-        ],
+        "tags": ["charging-profiles-controller"],
         "operationId": "getReceiverChargingProfile",
         "summary": "Gets the ActiveChargingProfile for a specific charging session",
         "description": "Implemented by: CPO\n\nRetrieves the ActiveChargingProfile as it is currently planned for the the given session.",
@@ -4047,9 +3873,7 @@
         }
       },
       "put": {
-        "tags": [
-          "charging-profiles-controller"
-        ],
+        "tags": ["charging-profiles-controller"],
         "operationId": "putReceiverChargingProfile",
         "summary": "Creates/updates a ChargingProfile for a specific charging sesison",
         "description": "Implemented by: CPO\n\nCreates a new ChargingProfile on a session, or replaces an existing ChargingProfile on the EVSE.",
@@ -4143,9 +3967,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "charging-profiles-controller"
-        ],
+        "tags": ["charging-profiles-controller"],
         "operationId": "deleteReceiverChargingProfile",
         "summary": "Cancels an existing ChargingProfile for a specific charging session",
         "description": "Implemented by: CPO\n\nClears the ChargingProfile set by the eMSP on the given session.",
@@ -4239,9 +4061,7 @@
     },
     "/ocpi/2.2.1/sender/chargingprofiles/result/{uid}": {
       "post": {
-        "tags": [
-          "charging-profiles-controller"
-        ],
+        "tags": ["charging-profiles-controller"],
         "operationId": "postChargingProfileResult",
         "summary": "Receive the asynchronous response from the Charge Point",
         "description": "Implemented by: SCSP\n\nAs the Sender interface is called by the Receiver (typically CPO) on the URL given response_url in the Sender request to the Receiver interface. It is up to the implementation of the Sender (typically SCSP) to determine what parameters are put in the URL. The Sender sends a URL in the `POST` method body to the Receiver. The Receiver is required to use this URL for the asynchronous response by the Charge Point. It is advised to make this URL unique for every request to differentiate simultaneous commands, for example by adding a unique id as a URL segment.",
@@ -4337,9 +4157,7 @@
     },
     "/ocpi/2.2.1/sender/chargingprofiles/{sessionId}": {
       "put": {
-        "tags": [
-          "charging-profiles-controller"
-        ],
+        "tags": ["charging-profiles-controller"],
         "operationId": "putSenderChargingProfile",
         "summary": "Updates the Sender (typically SCSP) when the Receiver (typically CPO) knows the ActiveChargingProfile has changed.",
         "description": "Implemented by: SCSP\n\nThe Receiver SHALL call this interface every time it knows changes have been made that influence the ActiveChargingProfile for an ongoing session AND the Sender has at least once successfully called the charging profile Receiver `PUT` interface for this session (SetChargingProfile). If the Receiver doesn’t know the ActiveChargingProfile has changed (EVSE does not notify the Receiver (typically CPO) of the change) it is not required to call this interface.\n\nThe Receiver SHALL NOT call this interface for any session where the Sender has never, successfully called the charging profile Receiver `PUT` interface for this session (SetChargingProfile).\n\nThe Receiver SHALL send a useful relevant duration of ActiveChargingProfile to send to the Sender. As a guide: between 5 and 60 minutes. If the Sender wants a longer ActiveChargingProfile the Sender can always do a `GET` with a longer duration.",
@@ -4435,9 +4253,7 @@
     },
     "/ocpi/2.2.1/receiver/clientinfo/{country_code}/{party_id}": {
       "get": {
-        "tags": [
-          "hub-client-info-controller"
-        ],
+        "tags": ["hub-client-info-controller"],
         "operationId": "getClientInfo",
         "summary": "Retrieve a ClientInfo object as it is stored in the connected clients system",
         "description": "Implemented by: Parties connected to Hub (CPO/eMSP/NSP, etc.)\n\nIf the Hub wants to check the status of a ClientInfo object in the connected clients system it might `GET` the object from the connected clients system for validation purposes. The Hub is the owner of the objects, so it would be illogical if the connected client system had a different status or was missing an object.",
@@ -4473,9 +4289,7 @@
         }
       },
       "put": {
-        "tags": [
-          "hub-client-info-controller"
-        ],
+        "tags": ["hub-client-info-controller"],
         "operationId": "putClientInfo",
         "summary": "Push new/updated ClientInfo object to connected clients",
         "description": "Implemented by: Parties connected to Hub (CPO/eMSP/NSP, etc.)\n\nNew or updated ClientInfo objects are pushed from the Hub to a connected client.",
@@ -4523,9 +4337,7 @@
     },
     "/ocpi/2.2.1/sender/clientinfo": {
       "get": {
-        "tags": [
-          "hub-client-info-controller"
-        ],
+        "tags": ["hub-client-info-controller"],
         "operationId": "getAllClientInfoFromHub",
         "summary": "Get the list of known ClientInfo objects, last updated between the {date_from} and {date_to} paginated)",
         "description": "Implemented by: Hub\n\nFetch information about clients connected to a Hub.",
@@ -4583,10 +4395,7 @@
   "components": {
     "schemas": {
       "Version": {
-        "required": [
-          "url",
-          "version"
-        ],
+        "required": ["url", "version"],
         "type": "object",
         "properties": {
           "version": {
@@ -4598,10 +4407,7 @@
         }
       },
       "VersionDetail": {
-        "required": [
-          "endpoints",
-          "version"
-        ],
+        "required": ["endpoints", "version"],
         "type": "object",
         "properties": {
           "version": {
@@ -4628,11 +4434,20 @@
         }
       },
       "Credentials": {
-        "required": [
-          "roles",
-          "token",
-          "url"
-        ],
+        "required": ["token", "url"],
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "maxLength": 64
+          },
+          "url": {
+            "$ref": "#/components/schemas/URL"
+          }
+        }
+      },
+      "CredentialsResponse": {
+        "required": ["roles", "token", "url"],
         "type": "object",
         "properties": {
           "token": {
@@ -4871,9 +4686,7 @@
         }
       },
       "ChargingPreferences": {
-        "required": [
-          "profile_type"
-        ],
+        "required": ["profile_type"],
         "type": "object",
         "properties": {
           "profile_type": {
@@ -5097,10 +4910,7 @@
         }
       },
       "AuthorizationInfo": {
-        "required": [
-          "allowed",
-          "token"
-        ],
+        "required": ["allowed", "token"],
         "type": "object",
         "properties": {
           "allowed": {
@@ -5194,10 +5004,7 @@
         }
       },
       "CancelReservation": {
-        "required": [
-          "reservation_id",
-          "response_url"
-        ],
+        "required": ["reservation_id", "response_url"],
         "type": "object",
         "properties": {
           "response_url": {
@@ -5211,10 +5018,7 @@
         }
       },
       "CommandResponse": {
-        "required": [
-          "result",
-          "timeout"
-        ],
+        "required": ["result", "timeout"],
         "type": "object",
         "properties": {
           "result": {
@@ -5230,9 +5034,7 @@
         }
       },
       "CommandResult": {
-        "required": [
-          "result"
-        ],
+        "required": ["result"],
         "type": "object",
         "properties": {
           "result": {
@@ -5285,11 +5087,7 @@
         }
       },
       "StartSession": {
-        "required": [
-          "location_id",
-          "response_url",
-          "token"
-        ],
+        "required": ["location_id", "response_url", "token"],
         "type": "object",
         "properties": {
           "response_url": {
@@ -5321,10 +5119,7 @@
         }
       },
       "StopSession": {
-        "required": [
-          "response_url",
-          "session_id"
-        ],
+        "required": ["response_url", "session_id"],
         "type": "object",
         "properties": {
           "response_url": {
@@ -5338,12 +5133,7 @@
         }
       },
       "UnlockConnector": {
-        "required": [
-          "connector_id",
-          "evse_uid",
-          "location_id",
-          "response_url"
-        ],
+        "required": ["connector_id", "evse_uid", "location_id", "response_url"],
         "type": "object",
         "properties": {
           "response_url": {
@@ -5367,10 +5157,7 @@
         }
       },
       "ChargingProfileResponse": {
-        "required": [
-          "result",
-          "timeout"
-        ],
+        "required": ["result", "timeout"],
         "type": "object",
         "properties": {
           "result": {
@@ -5383,9 +5170,7 @@
         }
       },
       "ActiveChargingProfileResult": {
-        "required": [
-          "result"
-        ],
+        "required": ["result"],
         "type": "object",
         "properties": {
           "result": {
@@ -5397,9 +5182,7 @@
         }
       },
       "ChargingProfileResult": {
-        "required": [
-          "result"
-        ],
+        "required": ["result"],
         "type": "object",
         "properties": {
           "result": {
@@ -5411,9 +5194,7 @@
         }
       },
       "ClearProfileResult": {
-        "required": [
-          "result"
-        ],
+        "required": ["result"],
         "type": "object",
         "properties": {
           "result": {
@@ -5422,10 +5203,7 @@
         }
       },
       "SetChargingProfile": {
-        "required": [
-          "charging_profile",
-          "response_url"
-        ],
+        "required": ["charging_profile", "response_url"],
         "type": "object",
         "properties": {
           "charging_profile": {
@@ -5468,11 +5246,7 @@
         }
       },
       "Endpoint": {
-        "required": [
-          "identifier",
-          "role",
-          "url"
-        ],
+        "required": ["identifier", "role", "url"],
         "type": "object",
         "properties": {
           "identifier": {
@@ -5541,12 +5315,7 @@
         }
       },
       "Evse": {
-        "required": [
-          "connectors",
-          "last_updated",
-          "status",
-          "uid"
-        ],
+        "required": ["connectors", "last_updated", "status", "uid"],
         "type": "object",
         "properties": {
           "uid": {
@@ -5615,10 +5384,7 @@
         }
       },
       "CdrDimension": {
-        "required": [
-          "type",
-          "volume"
-        ],
+        "required": ["type", "volume"],
         "type": "object",
         "properties": {
           "type": {
@@ -5631,12 +5397,7 @@
         }
       },
       "CredentialsRole": {
-        "required": [
-          "business_details",
-          "country_code",
-          "party_id",
-          "role"
-        ],
+        "required": ["business_details", "country_code", "party_id", "role"],
         "type": "object",
         "properties": {
           "role": {
@@ -5733,13 +5494,7 @@
         }
       },
       "CdrToken": {
-        "required": [
-          "country_code",
-          "party_id",
-          "contract_id",
-          "type",
-          "uid"
-        ],
+        "required": ["country_code", "party_id", "contract_id", "type", "uid"],
         "type": "object",
         "properties": {
           "country_code": {
@@ -5768,10 +5523,7 @@
         }
       },
       "ChargingPeriod": {
-        "required": [
-          "dimensions",
-          "start_date_time"
-        ],
+        "required": ["dimensions", "start_date_time"],
         "type": "object",
         "properties": {
           "start_date_time": {
@@ -5791,10 +5543,7 @@
         }
       },
       "DisplayText": {
-        "required": [
-          "language",
-          "text"
-        ],
+        "required": ["language", "text"],
         "type": "object",
         "properties": {
           "language": {
@@ -5808,9 +5557,7 @@
         }
       },
       "EnergyMix": {
-        "required": [
-          "is_green_energy"
-        ],
+        "required": ["is_green_energy"],
         "type": "object",
         "properties": {
           "is_green_energy": {
@@ -5839,10 +5586,7 @@
         }
       },
       "EnergySource": {
-        "required": [
-          "percentage",
-          "source"
-        ],
+        "required": ["percentage", "source"],
         "type": "object",
         "properties": {
           "source": {
@@ -5855,10 +5599,7 @@
         }
       },
       "EnvironmentalImpact": {
-        "required": [
-          "amount",
-          "category"
-        ],
+        "required": ["amount", "category"],
         "type": "object",
         "properties": {
           "category": {
@@ -5871,10 +5612,7 @@
         }
       },
       "GeoLocation": {
-        "required": [
-          "latitude",
-          "longitude"
-        ],
+        "required": ["latitude", "longitude"],
         "type": "object",
         "properties": {
           "latitude": {
@@ -5888,9 +5626,7 @@
         }
       },
       "Price": {
-        "required": [
-          "excl_vat"
-        ],
+        "required": ["excl_vat"],
         "type": "object",
         "properties": {
           "excl_vat": {
@@ -5904,11 +5640,7 @@
         }
       },
       "PriceComponent": {
-        "required": [
-          "price",
-          "step_size",
-          "type"
-        ],
+        "required": ["price", "step_size", "type"],
         "type": "object",
         "properties": {
           "type": {
@@ -5929,10 +5661,7 @@
         }
       },
       "SignedData": {
-        "required": [
-          "encoding_method",
-          "signed_values"
-        ],
+        "required": ["encoding_method", "signed_values"],
         "type": "object",
         "properties": {
           "encoding_method": {
@@ -5961,11 +5690,7 @@
         }
       },
       "SignedValue": {
-        "required": [
-          "nature",
-          "plain_data",
-          "signed_data"
-        ],
+        "required": ["nature", "plain_data", "signed_data"],
         "type": "object",
         "properties": {
           "nature": {
@@ -5984,9 +5709,7 @@
         }
       },
       "TariffElement": {
-        "required": [
-          "price_components"
-        ],
+        "required": ["price_components"],
         "type": "object",
         "properties": {
           "price_components": {
@@ -6079,10 +5802,7 @@
             "$ref": "#/components/schemas/DateTime"
           }
         },
-        "required": [
-          "status_code",
-          "timestamp"
-        ]
+        "required": ["status_code", "timestamp"]
       },
       "Unit": {
         "type": "object",
@@ -6091,9 +5811,7 @@
         }
       },
       "ChargingProfile": {
-        "required": [
-          "charging_rate_unit"
-        ],
+        "required": ["charging_rate_unit"],
         "type": "object",
         "properties": {
           "start_date_time": {
@@ -6119,10 +5837,7 @@
         }
       },
       "ActiveChargingProfile": {
-        "required": [
-          "charging_profile",
-          "start_date_time"
-        ],
+        "required": ["charging_profile", "start_date_time"],
         "type": "object",
         "properties": {
           "start_date_time": {
@@ -6134,10 +5849,7 @@
         }
       },
       "ChargingProfilePeriod": {
-        "required": [
-          "limit",
-          "start_period"
-        ],
+        "required": ["limit", "start_period"],
         "type": "object",
         "properties": {
           "start_period": {
@@ -6151,9 +5863,7 @@
         }
       },
       "EnergyContract": {
-        "required": [
-          "supplier_name"
-        ],
+        "required": ["supplier_name"],
         "type": "object",
         "properties": {
           "supplier_name": {
@@ -6167,9 +5877,7 @@
         }
       },
       "BusinessDetails": {
-        "required": [
-          "name"
-        ],
+        "required": ["name"],
         "type": "object",
         "properties": {
           "name": {
@@ -6185,11 +5893,7 @@
         }
       },
       "Image": {
-        "required": [
-          "category",
-          "type",
-          "url"
-        ],
+        "required": ["category", "type", "url"],
         "type": "object",
         "properties": {
           "url": {
@@ -6216,10 +5920,7 @@
         }
       },
       "AdditionalGeoLocation": {
-        "required": [
-          "latitude",
-          "longitude"
-        ],
+        "required": ["latitude", "longitude"],
         "type": "object",
         "properties": {
           "latitude": {
@@ -6236,10 +5937,7 @@
         }
       },
       "ExceptionalPeriod": {
-        "required": [
-          "period_begin",
-          "period_end"
-        ],
+        "required": ["period_begin", "period_end"],
         "type": "object",
         "properties": {
           "period_begin": {
@@ -6251,9 +5949,7 @@
         }
       },
       "Hours": {
-        "required": [
-          "twentyfourseven"
-        ],
+        "required": ["twentyfourseven"],
         "type": "object",
         "properties": {
           "twentyfourseven": {
@@ -6297,11 +5993,7 @@
         }
       },
       "RegularHours": {
-        "required": [
-          "period_begin",
-          "period_end",
-          "weekday"
-        ],
+        "required": ["period_begin", "period_end", "weekday"],
         "type": "object",
         "properties": {
           "weekday": {
@@ -6320,10 +6012,7 @@
         }
       },
       "StatusSchedule": {
-        "required": [
-          "period_begin",
-          "status"
-        ],
+        "required": ["period_begin", "status"],
         "type": "object",
         "properties": {
           "period_begin": {
@@ -6357,15 +6046,10 @@
             "$ref": "#/components/schemas/DateTime"
           }
         },
-        "required": [
-          "status_code",
-          "timestamp"
-        ]
+        "required": ["status_code", "timestamp"]
       },
       "LocationReferences": {
-        "required": [
-          "location_id"
-        ],
+        "required": ["location_id"],
         "type": "object",
         "properties": {
           "location_id": {
@@ -6389,13 +6073,7 @@
       },
       "VersionNumber": {
         "type": "string",
-        "enum": [
-          "2.0",
-          "2.1",
-          "2.1.1",
-          "2.2",
-          "2.2.1"
-        ]
+        "enum": ["2.0", "2.1", "2.1.1", "2.2", "2.2.1"]
       },
       "ModuleID": {
         "type": "string",
@@ -6413,22 +6091,11 @@
       },
       "InterfaceRole": {
         "type": "string",
-        "enum": [
-          "SENDER",
-          "RECEIVER"
-        ]
+        "enum": ["SENDER", "RECEIVER"]
       },
       "Role": {
         "type": "string",
-        "enum": [
-          "CPO",
-          "EMSP",
-          "HUB",
-          "NAP",
-          "NSP",
-          "OTHER",
-          "SCSP"
-        ]
+        "enum": ["CPO", "EMSP", "HUB", "NAP", "NSP", "OTHER", "SCSP"]
       },
       "ImageCategory": {
         "type": "string",
@@ -6444,12 +6111,7 @@
       },
       "TokenType": {
         "type": "string",
-        "enum": [
-          "AD_HOC_USER",
-          "APP_USER",
-          "OTHER",
-          "RFID"
-        ]
+        "enum": ["AD_HOC_USER", "APP_USER", "OTHER", "RFID"]
       },
       "ParkingType": {
         "type": "string",
@@ -6546,10 +6208,7 @@
       },
       "ConnectorFormat": {
         "type": "string",
-        "enum": [
-          "SOCKET",
-          "CABLE"
-        ]
+        "enum": ["SOCKET", "CABLE"]
       },
       "PowerType": {
         "type": "string",
@@ -6563,13 +6222,7 @@
       },
       "ParkingRestriction": {
         "type": "string",
-        "enum": [
-          "EV_ONLY",
-          "PLUGGED",
-          "DISABLED",
-          "CUSTOMERS",
-          "MOTORCYCLES"
-        ]
+        "enum": ["EV_ONLY", "PLUGGED", "DISABLED", "CUSTOMERS", "MOTORCYCLES"]
       },
       "Facility": {
         "type": "string",
@@ -6611,10 +6264,7 @@
       },
       "EnvironmentalImpactCategory": {
         "type": "string",
-        "enum": [
-          "NUCLEAR_WASTE",
-          "CARBON_DIOXIDE"
-        ]
+        "enum": ["NUCLEAR_WASTE", "CARBON_DIOXIDE"]
       },
       "ChargingPreferencesResponse": {
         "type": "string",
@@ -6628,30 +6278,15 @@
       },
       "ProfileType": {
         "type": "string",
-        "enum": [
-          "CHEAP",
-          "FAST",
-          "GREEN",
-          "REGULAR"
-        ]
+        "enum": ["CHEAP", "FAST", "GREEN", "REGULAR"]
       },
       "SessionStatus": {
         "type": "string",
-        "enum": [
-          "ACTIVE",
-          "COMPLETED",
-          "INVALID",
-          "PENDING",
-          "RESERVATION"
-        ]
+        "enum": ["ACTIVE", "COMPLETED", "INVALID", "PENDING", "RESERVATION"]
       },
       "AuthMethod": {
         "type": "string",
-        "enum": [
-          "AUTH_REQUEST",
-          "COMMAND",
-          "WHITELIST"
-        ]
+        "enum": ["AUTH_REQUEST", "COMMAND", "WHITELIST"]
       },
       "CdrDimensionType": {
         "type": "string",
@@ -6685,19 +6320,11 @@
       },
       "ReservationRestrictionType": {
         "type": "string",
-        "enum": [
-          "RESERVATION",
-          "RESERVATION_EXPIRES"
-        ]
+        "enum": ["RESERVATION", "RESERVATION_EXPIRES"]
       },
       "TariffDimensionType": {
         "type": "string",
-        "enum": [
-          "ENERGY",
-          "FLAT",
-          "PARKING_TIME",
-          "TIME"
-        ]
+        "enum": ["ENERGY", "FLAT", "PARKING_TIME", "TIME"]
       },
       "TariffType": {
         "type": "string",
@@ -6711,31 +6338,15 @@
       },
       "AllowedType": {
         "type": "string",
-        "enum": [
-          "ALLOWED",
-          "BLOCKED",
-          "EXPIRED",
-          "NO_CREDIT",
-          "NOT_ALLOWED"
-        ]
+        "enum": ["ALLOWED", "BLOCKED", "EXPIRED", "NO_CREDIT", "NOT_ALLOWED"]
       },
       "WhitelistType": {
         "type": "string",
-        "enum": [
-          "ALWAYS",
-          "ALLOWED",
-          "ALLOWED_OFFLINE",
-          "NEVER"
-        ]
+        "enum": ["ALWAYS", "ALLOWED", "ALLOWED_OFFLINE", "NEVER"]
       },
       "CommandResponseType": {
         "type": "string",
-        "enum": [
-          "NOT_SUPPORTED",
-          "REJECTED",
-          "ACCEPTED",
-          "UNKNOWN_SESSION"
-        ]
+        "enum": ["NOT_SUPPORTED", "REJECTED", "ACCEPTED", "UNKNOWN_SESSION"]
       },
       "CommandResultType": {
         "type": "string",
@@ -6763,10 +6374,7 @@
       },
       "ChargingRateUnit": {
         "type": "string",
-        "enum": [
-          "W",
-          "A"
-        ]
+        "enum": ["W", "A"]
       },
       "ChargingProfileResponseType": {
         "type": "string",
@@ -6780,20 +6388,11 @@
       },
       "ChargingProfileResultType": {
         "type": "string",
-        "enum": [
-          "ACCEPTED",
-          "REJECTED",
-          "UNKNOWN"
-        ]
+        "enum": ["ACCEPTED", "REJECTED", "UNKNOWN"]
       },
       "ConnectionStatus": {
         "type": "string",
-        "enum": [
-          "CONNECTED",
-          "OFFLINE",
-          "PLANNED",
-          "SUSPENDED"
-        ]
+        "enum": ["CONNECTED", "OFFLINE", "PLANNED", "SUSPENDED"]
       },
       "OcpiResponse": {
         "type": "object",
@@ -6812,16 +6411,10 @@
             "$ref": "#/components/schemas/DateTime"
           }
         },
-        "required": [
-          "status_code",
-          "timestamp"
-        ]
+        "required": ["status_code", "timestamp"]
       },
       "OcpiResponseObject": {
-        "required": [
-          "status_code",
-          "timestamp"
-        ],
+        "required": ["status_code", "timestamp"],
         "type": "object",
         "properties": {
           "data": {
@@ -6859,16 +6452,10 @@
             "$ref": "#/components/schemas/DateTime"
           }
         },
-        "required": [
-          "status_code",
-          "timestamp"
-        ]
+        "required": ["status_code", "timestamp"]
       },
       "OcpiResponseVersionDetail": {
-        "required": [
-          "status_code",
-          "timestamp"
-        ],
+        "required": ["status_code", "timestamp"],
         "type": "object",
         "properties": {
           "status_code": {
@@ -6887,10 +6474,7 @@
         }
       },
       "OcpiResponseCredentials": {
-        "required": [
-          "status_code",
-          "timestamp"
-        ],
+        "required": ["status_code", "timestamp"],
         "type": "object",
         "properties": {
           "status_code": {
@@ -6901,7 +6485,7 @@
             "type": "string"
           },
           "data": {
-            "$ref": "#/components/schemas/Credentials"
+            "$ref": "#/components/schemas/CredentialsResponse"
           },
           "timestamp": {
             "$ref": "#/components/schemas/DateTime"
@@ -6925,10 +6509,7 @@
             "$ref": "#/components/schemas/DateTime"
           }
         },
-        "required": [
-          "status_code",
-          "timestamp"
-        ]
+        "required": ["status_code", "timestamp"]
       },
       "OcpiResponseEvse": {
         "type": "object",
@@ -6947,10 +6528,7 @@
             "$ref": "#/components/schemas/DateTime"
           }
         },
-        "required": [
-          "status_code",
-          "timestamp"
-        ]
+        "required": ["status_code", "timestamp"]
       },
       "OcpiResponseConnector": {
         "type": "object",
@@ -6969,16 +6547,10 @@
             "$ref": "#/components/schemas/DateTime"
           }
         },
-        "required": [
-          "status_code",
-          "timestamp"
-        ]
+        "required": ["status_code", "timestamp"]
       },
       "OcpiResponseLocationList": {
-        "required": [
-          "status_code",
-          "timestamp"
-        ],
+        "required": ["status_code", "timestamp"],
         "type": "object",
         "properties": {
           "status_code": {
@@ -7016,10 +6588,7 @@
             "$ref": "#/components/schemas/DateTime"
           }
         },
-        "required": [
-          "status_code",
-          "timestamp"
-        ]
+        "required": ["status_code", "timestamp"]
       },
       "OcpiResponseSession": {
         "type": "object",
@@ -7038,10 +6607,7 @@
             "$ref": "#/components/schemas/DateTime"
           }
         },
-        "required": [
-          "status_code",
-          "timestamp"
-        ]
+        "required": ["status_code", "timestamp"]
       },
       "OcpiResponseSessionList": {
         "type": "object",
@@ -7063,10 +6629,7 @@
             "$ref": "#/components/schemas/DateTime"
           }
         },
-        "required": [
-          "status_code",
-          "timestamp"
-        ]
+        "required": ["status_code", "timestamp"]
       },
       "OcpiResponseCDR": {
         "type": "object",
@@ -7085,10 +6648,7 @@
             "$ref": "#/components/schemas/DateTime"
           }
         },
-        "required": [
-          "status_code",
-          "timestamp"
-        ]
+        "required": ["status_code", "timestamp"]
       },
       "OcpiResponseCDRList": {
         "type": "object",
@@ -7110,10 +6670,7 @@
             "$ref": "#/components/schemas/DateTime"
           }
         },
-        "required": [
-          "status_code",
-          "timestamp"
-        ]
+        "required": ["status_code", "timestamp"]
       },
       "OcpiResponseAuthorizationInfo": {
         "type": "object",
@@ -7132,10 +6689,7 @@
             "$ref": "#/components/schemas/DateTime"
           }
         },
-        "required": [
-          "status_code",
-          "timestamp"
-        ]
+        "required": ["status_code", "timestamp"]
       },
       "OcpiResponseToken": {
         "type": "object",
@@ -7154,10 +6708,7 @@
             "$ref": "#/components/schemas/DateTime"
           }
         },
-        "required": [
-          "status_code",
-          "timestamp"
-        ]
+        "required": ["status_code", "timestamp"]
       },
       "OcpiResponseTariff": {
         "type": "object",
@@ -7176,10 +6727,7 @@
             "$ref": "#/components/schemas/DateTime"
           }
         },
-        "required": [
-          "status_code",
-          "timestamp"
-        ]
+        "required": ["status_code", "timestamp"]
       },
       "OcpiResponseTokenList": {
         "type": "object",
@@ -7201,10 +6749,7 @@
             "$ref": "#/components/schemas/DateTime"
           }
         },
-        "required": [
-          "status_code",
-          "timestamp"
-        ]
+        "required": ["status_code", "timestamp"]
       },
       "OcpiResponseCommandResponse": {
         "type": "object",
@@ -7223,10 +6768,7 @@
             "$ref": "#/components/schemas/DateTime"
           }
         },
-        "required": [
-          "status_code",
-          "timestamp"
-        ]
+        "required": ["status_code", "timestamp"]
       },
       "OcpiResponseChargingProfileResponse": {
         "type": "object",
@@ -7245,10 +6787,7 @@
             "$ref": "#/components/schemas/DateTime"
           }
         },
-        "required": [
-          "status_code",
-          "timestamp"
-        ]
+        "required": ["status_code", "timestamp"]
       },
       "OcpiResponseClientInfo": {
         "type": "object",
@@ -7267,10 +6806,7 @@
             "$ref": "#/components/schemas/DateTime"
           }
         },
-        "required": [
-          "status_code",
-          "timestamp"
-        ]
+        "required": ["status_code", "timestamp"]
       },
       "OcpiResponseClientInfoList": {
         "type": "object",
@@ -7292,16 +6828,10 @@
             "$ref": "#/components/schemas/DateTime"
           }
         },
-        "required": [
-          "status_code",
-          "timestamp"
-        ]
+        "required": ["status_code", "timestamp"]
       },
       "BasicRole": {
-        "required": [
-          "country_code",
-          "party_id"
-        ],
+        "required": ["country_code", "party_id"],
         "type": "object",
         "properties": {
           "party_id": {
